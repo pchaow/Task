@@ -26,7 +26,14 @@
         <tr>
             <td>{{$task->id}}</td>
             <td>{{$task->name}}</td>
-            <td>Action</td>
+            <td>
+                <form method="post"
+                      action="/task/{{$task->id}}/delete">
+                    {{csrf_field()}}
+                    <button type="submit">Delete</button>
+                </form>
+
+            </td>
         </tr>
     @endforeach
     </tbody>
