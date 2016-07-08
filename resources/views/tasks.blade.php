@@ -27,8 +27,15 @@
             <td>{{$task->id}}</td>
             <td>{{$task->name}}</td>
             <td>
-                 <form method="post"
-                          action="/task/{{$task->id}}/delete">
+
+                <form method="get"
+                      action="/task/{{$task->id}}/edit">
+                    {{csrf_field()}}
+                    <button type="submit">Edit</button>
+                </form>
+
+                <form method="post"
+                      action="/task/{{$task->id}}/delete">
                     {{csrf_field()}}
                     <button type="submit">Delete</button>
                 </form>
