@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Show Task Dashboard
  */
@@ -10,6 +9,12 @@ Route::get('/', function () {
 
     return view('tasks')
         ->with("taskLists", $tasks);
+});
+
+Route::post('/task/{id}/delete', function ($id) {
+    $task = \App\Task::find($id);
+    $task->delete();
+    return redirect('/');
 });
 
 
