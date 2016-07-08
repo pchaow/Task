@@ -17,6 +17,20 @@ Route::post('/task/{id}/delete', function ($id) {
     return redirect('/');
 });
 
+Route::get('/task/{id}/edit', function ($id) {
+    $task = \App\Task::find($id);
+    return view('edittask')->with('task', $task);
+});
+
+Route::post('/task/{id}/edit', function (
+    \Illuminate\Http\Request $request, $id
+) {
+    $form = $request->get('task');
+    $task = \App\Task::find($id);
+    $task->name = $form['name'];
+    $task->save();
+    return redirect('/');
+});
 
 Route::post('/add-task', function (\Illuminate\Http\Request $request) {
     $form = $request->get('task');
