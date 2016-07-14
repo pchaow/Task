@@ -1,50 +1,47 @@
 <?php
 
-
-/**
- * Show Task Dashboard
- */
 Route::get('/', function () {
-    $tasks = \App\Task::all();
-
-    return view('tasks')
-        ->with("taskLists", $tasks);
+    return view('task');
 });
 
-Route::post('/task/{id}/delete', function ($id) {
-    $task = \App\Task::find($id);
-    $task->delete();
-    return redirect('/');
+Route::group(['middleware' => ['api']], function () {
+
+
+    //list all task
+    Route::get('task', function (\Request $request) {
+        return \App\Task::all();
+    });
+
+    //view one task
+    Route::get('task/{id}', function (\Request $request, $id) {
+        return \App\Task::find($id);
+    });
+
+    //update task
+    Route::post('task/{id}', function (\Request $request, $id) {
+        $task = \App\Task::find($id);
+        $task->name = $request->get('name');
+        $task->save();
+        return $task;
+    });
+
+    //create new task
+    Route::post('task', function (\Request $request) {
+        $task = new \App\Task();
+        $task->name = $request->get('name');
+        $task->save();
+        return $task;
+    });
+
+    //delete task;
+    Route::post('task/{id}/delete', function (\Request $request, $id) {
+        $task = \App\Task::find($id);
+        /* @var \App\Task $task */
+        return [$task->delete()];
+    });
+
+
 });
-
-Route::get('/task/{id}/edit', function ($id) {
-    $task = \App\Task::find($id);
-    return view('edittask')->with('task', $task);
-});
-
-Route::post('/task/{id}/edit', function (
-    \Illuminate\Http\Request $request, $id
-) {
-    $form = $request->get('task');
-    $task = \App\Task::find($id);
-    $task->name = $form['name'];
-    $task->save();
-    return redirect('/');
-});
-
-Route::post('/add-task', function (\Illuminate\Http\Request $request) {
-    $form = $request->get('task');
-
-    $task = new \App\Task();
-    $task->name = $form['name'];
-    $task->save();
-
-    return redirect('/');
-});
-
-
-
-
 
 
 
