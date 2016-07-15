@@ -57,19 +57,7 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">Task Management</h1>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <form class="form">
-                        <div class="form-group">
-                            <label>Task Name : </label>
-                            <input type="text" class="form-control" v-model="form.name"/>
-                        </div>
 
-                        <button v-on:click="addTask()" type="button" class="btn btn-primary">Add</button>
-
-                    </form>
-                </div>
-            </div>
 
             <div class="row">
                 <div class="col-lg-12">
@@ -89,7 +77,8 @@
                                 <button type="button" v-on:click="delTask(t.id)">
                                     ลบ
                                 </button>
-                                <button type="button" v-on:click="taskEdit(t)">
+                                <button data-toggle="modal" data-target="#myModal" type="button"
+                                        v-on:click="taskEdit(t)">
                                     แก้ไข
                                 </button>
                             </td>
@@ -99,27 +88,93 @@
                 </div>
             </div>
 
-            <div class="row" v-show="editForm.id">
+            <div class="row">
                 <div class="col-lg-12">
-                    <form class="form">
-                        <div class="form-group">
-                            <label>Task Name : </label>
-                            <input type="text" class="form-control" v-model="editForm.name"/>
+                    <!-- Modal -->
+                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <form class="form">
+                                                <div class="form-group">
+                                                    <label>Task Name : </label>
+                                                    <input type="text" class="form-control" v-model="form.name"/>
+                                                </div>
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+
+                                    <button v-on:click="addTask()"
+                                            data-dismiss="modal"
+                                            type="button" class="btn btn-primary">Add</button>
+
+
+                                    <button v-on:click="" type="button"
+                                            data-dismiss="modal"
+                                            class="btn btn-default">
+                                        Cancel
+                                    </button>
+
+                                </div>
+                            </div>
                         </div>
-
-                        <button v-on:click="editTask(editForm.id)" type="button" class="btn btn-primary">
-                            Save
-                        </button>
-
-                        <button v-on:click="taskEditCancel()" type="button" class="btn btn-default">
-                            Cancel
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row" v-show="editForm.id">
+                                        <div class="col-lg-12">
+                                            <form class="form">
+                                                <div class="form-group">
+                                                    <label>Task Name : </label>
+                                                    <input type="text" class="form-control" v-model="editForm.name"/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+
+                                    <button v-on:click="editTask(editForm.id)" type="button"
+                                            data-dismiss="modal"
+                                            class="btn btn-primary">
+                                        Save
+                                    </button>
+
+                                    <button v-on:click="taskEditCancel()" type="button"
+                                            data-dismiss="modal"
+                                            class="btn btn-default">
+                                        Cancel
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
