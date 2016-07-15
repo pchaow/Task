@@ -58,7 +58,6 @@
             <h1 class="page-header">Task Management</h1>
 
 
-
             <div class="row">
                 <div class="col-lg-12">
                     <table class="table table-bordered">
@@ -117,10 +116,11 @@
 
                                     <button v-on:click="addTask()"
                                             data-dismiss="modal"
-                                            type="button" class="btn btn-primary">Add</button>
+                                            type="button" class="btn btn-primary">Add
+                                    </button>
 
 
-                                    <button v-on:click="" type="button"
+                                    <button type="button"
                                             data-dismiss="modal"
                                             class="btn btn-default">
                                         Cancel
