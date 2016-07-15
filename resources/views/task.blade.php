@@ -253,7 +253,7 @@
             },
             refreshTable: function () {
 
-                this.$http.get('/task?keyword='+this.searchForm.keyword).then(function (result) {
+                this.$http.get('/task',{params : this.searchForm}).then(function (result) {
                     this.tasks = result.data;
                     console.log(result);
                 });
