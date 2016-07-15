@@ -62,7 +62,7 @@
                     <form class="form">
                         <div class="form-group">
                             <label>Task Name : </label>
-                            <input type="text" class="form-control" v-model="taskForm.name"/>
+                            <input type="text" class="form-control" v-model="form.name"/>
                         </div>
 
                         <button v-on:click="addTask()" type="button" class="btn btn-primary">Add</button>
@@ -73,15 +73,56 @@
 
             <div class="row">
                 <div class="col-lg-12">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <td>ID</td>
+                            <td>Name</td>
+                            <td>Action</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="t in tasks">
+                            <td>@{{ t.id }}</td>
+                            <td>@{{ t.name }}</td>
+                            <td>
+                                <button type="button" v-on:click="delTask(t.id)">
+                                    ลบ
+                                </button>
+                                <button type="button" v-on:click="taskEdit(t)">
+                                    แก้ไข
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
+            <div class="row" v-show="editForm.id">
+                <div class="col-lg-12">
+                    <form class="form">
+                        <div class="form-group">
+                            <label>Task Name : </label>
+                            <input type="text" class="form-control" v-model="editForm.name"/>
+                        </div>
+
+                        <button v-on:click="editTask(editForm.id)" type="button" class="btn btn-primary">
+                            Save
+                        </button>
+
+                        <button v-on:click="taskEditCancel()" type="button" class="btn btn-default">
+                            Cancel
+                        </button>
+                    </form>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -102,17 +143,54 @@
     var app = new Vue({
         el: "body",
         data: {
-            taskForm: {},
+            tasks: [],
+            form: {},
+            editForm: {}
         },
         methods: {
-            addTask: function () {
-                this.$http.post('/task', this.taskForm).then(function (r) {
-                    console.log(r);
+            taskEditCancel: function () {
+                this.editForm = {}
+            },
+            taskEdit: function (task) {
+                //deep copy
+                this.editForm = JSON.parse(JSON.stringify(task));
+            },
+            editTask: function (id) {
+                this.$http.post(
+                        '/task/' + id,
+                        this.editForm
+                ).then(function (result) {
+                    this.editForm = {};
+                    this.refreshTable();
                 })
             },
+            delTask: function (id) {
+                this.$http.post(
+                        '/task/' + id + '/delete'
+                ).then(function (result) {
+                    this.refreshTable();
+                })
+            },
+            addTask: function () {
+                this.$http.post(
+                        '/task',
+                        this.form
+                ).then(function (result) {
+                    this.form = {};
+                    this.refreshTable();
+                })
+            },
+            refreshTable: function () {
+                this.$http.get(
+                        '/task'
+                ).then(function (result) {
+                    this.tasks = result.data;
+                    console.log(result);
+                })
+            }
         },
         ready: function () {
-            console.log("hello world");
+            this.refreshTable();
         }
     })
 </script>
