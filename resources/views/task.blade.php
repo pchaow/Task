@@ -64,6 +64,12 @@
                         Add New Task
                     </button>
                 </div>
+
+                <div class="col-lg-12">
+                    <input type="text" v-model="searchForm.keyword"/>
+                    <button type="button" v-on:click="refreshTable()">ค้นหา</button>
+                </div>
+
             </div>
 
             <div class="row">
@@ -207,7 +213,10 @@
         data: {
             tasks: [],
             form: {},
-            editForm: {}
+            editForm: {},
+            searchForm: {
+                keyword: ""
+            },
         },
         methods: {
             taskEditCancel: function () {
@@ -243,16 +252,17 @@
                 })
             },
             refreshTable: function () {
-                this.$http.get(
-                        '/task'
-                ).then(function (result) {
+
+                this.$http.get('/task?keyword='+this.searchForm.keyword).then(function (result) {
                     this.tasks = result.data;
                     console.log(result);
-                })
+                });
             }
         },
         ready: function () {
             this.refreshTable();
+
+
         }
     })
 </script>

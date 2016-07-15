@@ -3,8 +3,17 @@
 use Illuminate\Http\Request;
 
 //list all task
+// http://localhost:8000/task?keyword=abc
 Route::get('task', function (Request $request) {
-    return \App\Task::all();
+
+    $query = \App\Task::query();
+
+    if($request->has('keyword')){
+        $keyword = $request->get('keyword');
+        $query->where('name','LIKE',"%$keyword%");
+    }
+
+    return $query->get();
 });
 
 //view one task
